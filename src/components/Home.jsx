@@ -1,10 +1,11 @@
 import React from "react";
 import logo from "../images/logo.jpeg"
-import { json, Link } from "react-router-dom";
+import { json, Link, useSearchParams } from "react-router-dom";
 
 import { IoIosAdd } from "react-icons/io";
 import TaskItem from "./TaskItem";
 export default function Home(){
+    const [searchParams,setSearchParams]=useSearchParams()
     const date=new Date()
     const day=date.getDate()
     const[task,SetTask]=React.useState( JSON.parse(localStorage.getItem("tasks"))||[]);
@@ -16,19 +17,27 @@ export default function Home(){
           })
     }
     function handleDelete(id){
-        console.log("deleted"+id)
         SetTask(prev=>prev.filter(item=>item.id !==id))
       
     }
     React.useEffect(()=>{
         localStorage.setItem("tasks",JSON.stringify(task))
 
-        if(task.length===1 && task[0]===null){
-          localStorage.clear
-        }
     },[task])
-   
-    const taskArr=task.map(task=>{
+   const type=searchParams.get("type")
+   var displayedTasks;
+   if(type && type==="completed"){
+      displayedTasks=task.filter(task=>task.status ===true)
+   }
+   else if(type && type==="pending"){
+    displayedTasks=task.filter(task=>task.status ===false)
+   }
+   else{
+        displayedTasks=task;
+   }
+ 
+
+    const taskArr=displayedTasks.map(task=>{
         return(
             <TaskItem 
             key={task.id}
@@ -57,6 +66,11 @@ export default function Home(){
                 </div>
                 {task.length>0 ?
                      <div>
+                      <div className="filters">
+                        <Link to="?type=completed"><h5 className={`completedf ${type==="completed"?"selected":null}`}>completed</h5></Link>
+                        <Link to ="?type=pending"><h5  className={`pendingf ${type==="pending"?"selected":null}`} >Pending</h5></Link>
+                        <Link to=""><h5>Clear </h5></Link>
+                      </div>
 
                     {taskArr}
                     <Link to="/add">
@@ -66,10 +80,13 @@ export default function Home(){
                     </Link>
                     
                     </div>:
-                 <Link to="add">
+                    <>
+                
                     <h2 className="message">oops! You don't have any Tasks</h2>
-                  <div className="create" > create one</div>
+                    <Link to="add">
+                   <div className="create" > create one</div>
                  </Link>
+                 </>
                 
                 }
 

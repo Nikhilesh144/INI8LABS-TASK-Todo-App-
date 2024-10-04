@@ -32,9 +32,22 @@ a{
   padding: 5px;
 
 }
-.message{
-  padding: 40px;
+.filters{
   display: flex;
+  padding: 10px 26%;
+  justify-content: space-between;
+  /* border: #80f751 solid 1px; */
+
+}
+.filters h5{
+  cursor: pointer;
+}
+
+.message{
+  padding: 20px;
+  display: flex;
+  color: #9395D3;
+  margin-left: 25%;
 }
 .create{
   background-color: #9395D3 ;
@@ -103,6 +116,7 @@ button{
 }
 .status h5{
   padding: 10px ;
+  cursor: pointer;
   /* border: #80f751 1px solid; */
   /* width: 150%; */
 }
@@ -172,5 +186,17 @@ button{
   padding: 10px;
   border-radius: 5px;
   color: black;
+}
+.warning{
+  padding-left: 30%;
+  color: red;
+}
+.completedf.selected{
+  background-color: #80f751;
+  border-radius: 3px;
+}
+.pendingf.selected{
+  background-color: #f2f53c;
+  border-radius: 3px;
 }
 
